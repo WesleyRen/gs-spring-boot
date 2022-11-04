@@ -10,12 +10,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(scanBasePackages = {
-		"com.example.caching",
+		"com.example.*",
 })
 @EnableCaching
 public class Application {
 
-	public static void main(String[] args) {SpringApplication.run(Application.class, args);}
+	public static void main(String[] args) {SpringApplication.run(Application.class, args);
+	System.out.printf("args length: %d, value: %s\n", args.length, Arrays.stream(args).reduce((ret, v) -> ret + ", " + v));}
 
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
@@ -27,7 +28,7 @@ public class Application {
 			System.out.println("\nLet's inspect the beans provided by Spring Boot:");
 			System.out.printf("Total Spring Bean count: %s.\n", beanNames.length);
 
-			if (args.length > 1 && args[1].equals("true")) {
+			if (args.length > 0 && args[0].equals("true")) {
 				for (String beanName : beanNames) {
 					System.out.println(beanName);
 				}
