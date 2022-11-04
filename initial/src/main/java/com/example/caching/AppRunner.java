@@ -5,6 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Component
 public class AppRunner implements CommandLineRunner {
 
@@ -18,13 +22,13 @@ public class AppRunner implements CommandLineRunner {
 
   @Override
   public void run(String... args) throws Exception {
-    logger.info(".... Fetching books");
-    logger.info("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
-    logger.info("isbn-4567 -->" + bookRepository.getByIsbn("isbn-4567"));
-    logger.info("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
-    logger.info("isbn-4567 -->" + bookRepository.getByIsbn("isbn-4567"));
-    logger.info("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
-    logger.info("isbn-1234 -->" + bookRepository.getByIsbn("isbn-1234"));
+    String a = "isbn-1234";
+    String b = "isbn-4567";
+    List<String> bookList = new ArrayList<>(Arrays.asList(a, b, a, b, a, a));
+    bookList.forEach(book -> {
+      logger.info("fetching " + book + " ...");
+      logger.info("         -> " + bookRepository.getByIsbn(book).toString());
+    });
   }
 
 }
