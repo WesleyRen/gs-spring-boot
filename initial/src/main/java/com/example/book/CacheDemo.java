@@ -2,6 +2,7 @@ package com.example.book;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -14,10 +15,11 @@ public class CacheDemo implements CommandLineRunner {
 
   private static final Logger logger = LoggerFactory.getLogger(CacheDemo.class);
 
-  private final BookRepository bookRepository;
+  private final BookLookupService bookLookupService;
 
-  public CacheDemo(BookRepository bookRepository) {
-    this.bookRepository = bookRepository;
+  @Autowired
+  public CacheDemo(BookLookupService bookLookup) {
+    this.bookLookupService = bookLookup;
   }
 
   @Override
@@ -26,9 +28,18 @@ public class CacheDemo implements CommandLineRunner {
     String b = "isbn-4567";
     List<String> bookList = new ArrayList<>(Arrays.asList(a, b, a, b, a, a));
     bookList.forEach(book -> {
+      long startTime = System.nanoTime();
       logger.info("fetching " + book + " ...");
-      logger.info("         -> " + bookRepository.getByIsbn(book).toString());
+      logger.info("         -> " + bookLookupService.get(book).toString() + ". Time (ms): " + (System.nanoTime() - startTime) / 1000000);
     });
+
+    long startTime = System.nanoTime();
+    logger.info("fetching all books ...");
+    logger.info("         -> " + bookLookupService.getAll().size() + ". Time (ms): " + (System.nanoTime() - startTime) / 1000000);
+
+    startTime = System.nanoTime();
+    logger.info("fetching all books again ...");
+    logger.info("         -> " + bookLookupService.getAll().size() + ". Time (ms): " + (System.nanoTime() - startTime) / 1000000);
   }
 
 }
