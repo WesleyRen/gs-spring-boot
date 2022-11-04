@@ -8,6 +8,8 @@ import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +28,7 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
      * will pick this as default cache provider.
      * @return CacheManager: the default cache manager.
      */
-    @Override
+    @Primary
     @Bean // good to have but not strictly necessary
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();

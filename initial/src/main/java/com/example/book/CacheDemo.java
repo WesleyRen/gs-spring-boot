@@ -1,4 +1,4 @@
-package com.example.caching;
+package com.example.book;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,13 +10,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class AppRunner implements CommandLineRunner {
+public class CacheDemo implements CommandLineRunner {
 
-  private static final Logger logger = LoggerFactory.getLogger(AppRunner.class);
+  private static final Logger logger = LoggerFactory.getLogger(CacheDemo.class);
 
   private final BookRepository bookRepository;
 
-  public AppRunner(BookRepository bookRepository) {
+  public CacheDemo(BookRepository bookRepository) {
     this.bookRepository = bookRepository;
   }
 

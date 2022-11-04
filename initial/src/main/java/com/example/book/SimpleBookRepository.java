@@ -1,4 +1,4 @@
-package com.example.caching;
+package com.example.book;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
