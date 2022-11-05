@@ -1,6 +1,5 @@
 package com.example.book;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -8,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class SimpleBookRepository implements BookRepository {
+public class SlowBookRepositoryMock implements BookRepository {
 
   @Override
   public Book getByIsbn(String isbn) {

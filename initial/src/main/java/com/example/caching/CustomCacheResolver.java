@@ -5,10 +5,13 @@ import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.interceptor.CacheOperationInvocationContext;
 import org.springframework.cache.interceptor.CacheResolver;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+@Component
 public class CustomCacheResolver implements CacheResolver {
 
     private final CacheManager cacheManager;
@@ -16,7 +19,7 @@ public class CustomCacheResolver implements CacheResolver {
 
     public CustomCacheResolver(final CacheManager cacheManager, CacheManager alternateCacheManager) {
         this.cacheManager = cacheManager;
-        this.alternateCacheManager = cacheManager;
+        this.alternateCacheManager = alternateCacheManager;
     }
 
     @Override

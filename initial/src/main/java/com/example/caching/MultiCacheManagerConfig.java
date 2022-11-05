@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class MultiCacheManagerConfig extends CachingConfigurerSupport {
 
     public String[] cacheNames = {
-        "products"
+        "products", "books"
     };
 
     /**
@@ -32,7 +32,7 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
     @Bean // good to have but not strictly necessary
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.setCacheNames(Arrays.asList("books")); // optional; if set, @Cacheable can only what's provided.
+        cacheManager.setCacheNames(Arrays.asList("books")); // optional; if set, @Cacheable can only use what's provided.
         cacheManager.setCaffeine(caffeineCacheBuilder());
         return cacheManager;
     }

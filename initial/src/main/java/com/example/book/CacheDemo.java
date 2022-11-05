@@ -23,14 +23,17 @@ public class CacheDemo implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
+    if (args.length > 0 && args[0].equals("false")) {
+      return;
+    }
     String a = "isbn-1234";
     String b = "isbn-4567";
     List<String> bookList = new ArrayList<>(Arrays.asList(a, b, a, b, a, a));
     bookList.forEach(book -> {
       long startTime = System.nanoTime();
       logger.info("fetching " + book + " ...");
-      logger.info("         -> " + bookLookupService.get(book).toString() + ". Time (ms): " + (System.nanoTime() - startTime) / 1000000);
+      logger.info("         -> " + bookLookupService.getByIsbn(book).toString() + ". Time (ms): " + (System.nanoTime() - startTime) / 1000000);
     });
 
     long startTime = System.nanoTime();
