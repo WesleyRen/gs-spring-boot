@@ -30,21 +30,22 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
      */
     @Primary
     @Bean // good to have but not strictly necessary
-    public CacheManager cacheManager() {
+    public CacheManager cacheManager(Caffeine caffeine) {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.setCacheNames(Arrays.asList("books")); // optional; if set, @Cacheable can only use what's provided.
-        cacheManager.setCaffeine(caffeineCacheBuilder());
+        cacheManager.setCaffeine(caffeine);
         return cacheManager;
     }
 
-    Caffeine < Object, Object > caffeineCacheBuilder() {
+    @Bean
+    public Caffeine < Object, Object > caffeineCacheBuilder() {
         return Caffeine.newBuilder()
             .initialCapacity(100)
             .maximumSize(500)
             .expireAfterAccess(10, TimeUnit.MINUTES)
-            .weakKeys()
             .recordStats();
     }
+
 
     /**
      * Second cache provider which can work as fallback or will be used when invoked explicitly in the
