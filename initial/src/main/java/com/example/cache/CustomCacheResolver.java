@@ -1,4 +1,4 @@
-package com.example.caching;
+package com.example.cache;
 
 import com.example.book.BookLookupService;
 import org.springframework.cache.Cache;
