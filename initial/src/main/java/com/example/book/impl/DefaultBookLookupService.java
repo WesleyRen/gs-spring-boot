@@ -20,13 +20,13 @@ public class DefaultBookLookupService implements BookLookupService {
     }
 
     @Override
-    @Cacheable(cacheNames = "books")
+    @Cacheable(cacheNames = "books", cacheManager = "memcachedCacheManager")
     public Book getByIsbn(String isbn) {
         return bookRepository.getByIsbn(isbn);
     }
 
     @Override
-    @Cacheable(cacheNames = "books")
+    @Cacheable(cacheNames = "books", cacheManager = "memcachedCacheManager")
     public List<Book> getAll() {
         return bookRepository.getAll();
     }

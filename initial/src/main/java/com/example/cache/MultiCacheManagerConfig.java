@@ -1,21 +1,33 @@
 package com.example.cache;
 
+import com.example.memcached.Memcached;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
+import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableCaching
 public class MultiCacheManagerConfig extends CachingConfigurerSupport {
+
+    @Value("${memcached.addresses}")
+    private String memcachedAddresses;
+
+    @Value("${memcached.expiration.sec}")
+    private int expirationSec;
 
     public String[] cacheNames = {
         "products", "books"
@@ -46,6 +58,22 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
             .recordStats();
     }
 
+    @Bean
+    public CacheManager memcachedCacheManager() {
+        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        try {
+            cacheManager.setCaches(internalCaches());
+            return cacheManager;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Collection<Memcached> internalCaches() throws IOException {
+        final Collection<Memcached> caches = new ArrayList<>();
+        caches.add(new Memcached("books", memcachedAddresses, expirationSec));
+        return caches;
+    }
 
     /**
      * Second cache provider which can work as fallback or will be used when invoked explicitly in the
@@ -55,4 +83,5 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
     CacheManager alternateCacheManager() {
         return new ConcurrentMapCacheManager(cacheNames);
     }
+
 }
