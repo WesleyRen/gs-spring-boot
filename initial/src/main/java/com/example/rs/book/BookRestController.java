@@ -1,4 +1,4 @@
-package com.example.rs;
+package com.example.rs.book;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

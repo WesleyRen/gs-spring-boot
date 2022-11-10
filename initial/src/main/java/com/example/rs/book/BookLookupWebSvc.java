@@ -1,4 +1,4 @@
-package com.example.rs;
+package com.example.rs.book;
 
 import com.example.book.Book;
 import com.example.book.BookLookupService;
