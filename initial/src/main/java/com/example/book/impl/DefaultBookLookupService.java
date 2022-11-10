@@ -25,8 +25,12 @@ public class DefaultBookLookupService implements BookLookupService {
         return bookRepository.getByIsbn(isbn);
     }
 
+    /*
+    Need an explicit key for WM driver, without it causes: "Key contains invalid characters:  ``SimpleKey []''".
+    SimpleKey.EMPTY is the default key for method without parameters.
+     */
     @Override
-    @Cacheable(cacheNames = "books", cacheManager = "memcachedCacheManager")
+    @Cacheable(cacheNames = "books", cacheManager = "memcachedCacheManager", key = "#root.methodName")
     public List<Book> getAll() {
         return bookRepository.getAll();
     }

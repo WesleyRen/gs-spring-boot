@@ -1,15 +1,15 @@
 package com.example.memcached;
 
-import java.io.IOException;
-import java.util.concurrent.Callable;
-import net.spy.memcached.AddrUtil;
-import net.spy.memcached.ConnectionFactoryBuilder;
-import net.spy.memcached.MemcachedClient;
-import net.spy.memcached.transcoders.SerializingTranscoder;
+import net.spy.memcached.LocatorType;
+import net.spy.memcached.WmClient;
+import net.spy.memcached.WmConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.support.SimpleValueWrapper;
+
+import java.io.IOException;
+import java.util.concurrent.Callable;
 
 public class Memcached implements Cache {
 
@@ -17,19 +17,24 @@ public class Memcached implements Cache {
 
     private final String name;
 
-    private final MemcachedClient cache;
+    private final WmClient cache;
 
     private final int expiration;
 
-    public Memcached(String name, String memcachedAddresses, int expiration) throws IOException {
+    public Memcached(String name, String mcRouterHosts, int expiration) throws IOException {
         this.name = name;
         this.expiration = expiration;
-        cache = new MemcachedClient(
-            new ConnectionFactoryBuilder()
-                .setTranscoder(new SerializingTranscoder())
-                .setProtocol(ConnectionFactoryBuilder.Protocol.BINARY)
-                .build(),
-            AddrUtil.getAddresses(memcachedAddresses));
+        cache = new WmClient(
+                new WmConnectionFactory(
+                        50,
+                        8,
+                        1*1024*1024,
+                        true,
+                        30000,
+                        LocatorType.WEIGHT_ROUND_ROBIN
+                ),
+                5000,
+                mcRouterHosts);
     }
 
     @Override
