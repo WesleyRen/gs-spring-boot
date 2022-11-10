@@ -1,6 +1,7 @@
 package com.example.cache;
 
 import com.example.memcached.Memcached;
+import com.example.memcached.MemcachedManager;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
@@ -8,7 +9,6 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -60,13 +60,14 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
 
     @Bean
     public CacheManager memcachedCacheManager() {
-        SimpleCacheManager cacheManager = new SimpleCacheManager();
+        CacheManager cacheManager;
         try {
-            cacheManager.setCaches(internalCaches());
+            cacheManager = new MemcachedManager(internalCaches());
             return cacheManager;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     private Collection<Memcached> internalCaches() throws IOException {
