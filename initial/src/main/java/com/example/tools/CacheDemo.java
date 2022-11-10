@@ -1,5 +1,6 @@
-package com.example.book;
+package com.example.tools;
 
+import com.example.book.BookLookupService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
