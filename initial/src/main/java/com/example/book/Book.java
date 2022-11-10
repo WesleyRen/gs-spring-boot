@@ -16,21 +16,25 @@ public class Book implements Serializable {
     return isbn;
   }
 
-  public void setIsbn(String isbn) {
+  public Book withIsbn(String isbn) {
     this.isbn = isbn;
+    return this;
   }
 
   public String getTitle() {
     return title;
   }
 
-  public void setTitle(String title) {
+  public Book withTitle(String title) {
     this.title = title;
+    return this;
   }
 
   @Override
   public String toString() {
-    return "Book{" + "isbn='" + isbn + '\'' + ", title='" + title + '\'' + '}';
+    return "Book{" +
+            "isbn='" + isbn + '\'' +
+            ", title='" + title + '\'' +
+            '}';
   }
-
 }
