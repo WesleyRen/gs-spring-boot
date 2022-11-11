@@ -25,12 +25,8 @@ public class DefaultAuthorLookupService implements AuthorLookupService {
         return authorRepository.getByName(name);
     }
 
-    /*
-    Need an explicit key for WM driver, without it causes: "Key contains invalid characters:  ``SimpleKey []''".
-    SimpleKey.EMPTY is the default key for method without parameters.
-     */
     @Override
-    @Cacheable(cacheNames = "authors", cacheManager = "memcachedCacheManager", key = "#root.methodName")
+    @Cacheable(cacheNames = "authors", cacheManager = "memcachedCacheManager")
     public List<Author> getAll() {
         return authorRepository.getAll();
     }
