@@ -20,7 +20,7 @@ public class DefaultAuthorLookupService implements AuthorLookupService {
     }
 
     @Override
-//    @Cacheable(cacheNames = "authors", cacheManager = "memcachedCacheManager")
+    @Cacheable(cacheNames = "authors", cacheManager = "memcachedCacheManager")
     public Author getByName(String name) {
         return authorRepository.getByName(name);
     }
@@ -30,7 +30,7 @@ public class DefaultAuthorLookupService implements AuthorLookupService {
     SimpleKey.EMPTY is the default key for method without parameters.
      */
     @Override
-//    @Cacheable(cacheNames = "authors", cacheManager = "memcachedCacheManager", key = "#root.methodName")
+    @Cacheable(cacheNames = "authors", cacheManager = "memcachedCacheManager", key = "#root.methodName")
     public List<Author> getAll() {
         return authorRepository.getAll();
     }

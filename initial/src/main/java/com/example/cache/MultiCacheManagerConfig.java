@@ -26,8 +26,11 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
     @Value("${memcached.addresses}")
     private String memcachedAddresses;
 
-    @Value("${memcached.expiration.sec}")
-    private int expirationSec;
+    @Value("${memcached.expiration.sec.books}")
+    private int expirationSecBooks;
+
+    @Value("${memcached.expiration.sec.authors}")
+    private int expirationSecAuthors;
 
     public String[] cacheNames = {
         "products", "books"
@@ -44,7 +47,8 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
     @Bean // good to have but not strictly necessary
     public CacheManager cacheManager(Caffeine caffeine) {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.setCacheNames(Arrays.asList("books")); // optional; if set, @Cacheable can only use what's provided.
+        // optional; if set, @Cacheable can only use what's provided here.
+        cacheManager.setCacheNames(Arrays.asList("books"));
         cacheManager.setCaffeine(caffeine);
         return cacheManager;
     }
@@ -72,7 +76,8 @@ public class MultiCacheManagerConfig extends CachingConfigurerSupport {
 
     private Collection<Memcached> internalCaches() throws IOException {
         final Collection<Memcached> caches = new ArrayList<>();
-        caches.add(new Memcached("books", memcachedAddresses, expirationSec));
+        caches.add(new Memcached("books", memcachedAddresses, expirationSecBooks));
+        caches.add(new Memcached("authors", memcachedAddresses, expirationSecAuthors));
         return caches;
     }
 
